@@ -6,8 +6,7 @@ import argparse
 import nltk
 import hp
 
-# these NLTK resources are not automatically included when nltk is
-# installed. If they are not found, try downloading them now
+# Install required packages.
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
@@ -17,11 +16,6 @@ try:
 except LookupError:
     nltk.download('averaged_perceptron_tagger')
 
-# default location for data
-default_data_dir = "/Users/finin/Projects/ACCL/semeval18/converted_into_text/"
-
-# default file for output
-default_output_file = "hearst.out"
 
 # default is use extended Hearsh patterns
 

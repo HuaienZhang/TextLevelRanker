@@ -1,0 +1,9 @@
+Finally , in order to provide the best possible service and to allow us to make certain internal reports and make recommendations , we collect aggregate information about the use of the Services , including information about users accessing the Services on other sites , such as internet protocol addresses , browser type , browser language , referring / exit pages and URLs , other browser history , platform type , number of clicks , domain names , landing pages , pages viewed and the order of those pages , the amount of time spent on particular pages , and the date and time ( `` Activity Information '' )
+* browser history是前面的搞成了形容词，所以需要补
+
+Sensitive Information Sensitive information is defined in the US Act to include information or opinion about such things as an individual racial or ethnic origin , political opinions , membership of a political association , religious or philosophical beliefs , membership of a professional body , criminal records or health information
+
+This information includes your activity on the Netflix service , such as title selections , shows you have watched , and search queries
+
+We will collect Log information Diagnostic , technical , error , and usage information such as the time and duration of your use of Services , search query terms when you enter search terms into your device in connection with a particular Samsung Service , and any information stored in cookies that we have set on your devices
+(the time | usage information)

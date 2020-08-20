@@ -27,6 +27,7 @@ class HearstPatterns(object):
                 ("(NP_\w+ (, )?related to (NP_\w+ ?(, )?(and |or )?)+)", "first")
             ]
 
+        # This var is the tag represent extended hearst pattern.
         extended = True
         if extended:
             self.__hearst_patterns.extend([
@@ -87,12 +88,20 @@ class HearstPatterns(object):
         sentences = nltk.sent_tokenize(rawtext.strip()) # NLTK default sentence segmenter
         sentences = [nltk.word_tokenize(sent) for sent in sentences] # NLTK word tokenizer
         sentences = [self.__pos_tagger.tag(sent) for sent in sentences] # NLTK POS tagger
-
         return sentences
 
+    # This function is used to tag NP.
     def chunk(self, rawtext):
         sentences = self.prepare(rawtext.strip())
-
+        for sentence in sentences:
+            print(sentence)
+            for i in range(1, len(sentence)):
+                token = sentence[i]
+                prev_token = sentence[i - 1]
+                if token[1] == 'NN' and (prev_token[1] == 'JJR' or prev_token[1] == 'JJ' or prev_token[1] == 'JJS'):
+                    new_token = (prev_token[0], 'NN')
+                    sentence.remove(prev_token)
+                    sentence.insert(i - 1, new_token)
         all_chunks = []
         for sentence in sentences:
             chunks = self.__np_chunker.parse(sentence) # parse the example sentence
@@ -135,17 +144,9 @@ class HearstPatterns(object):
     def find_hyponyms(self, rawtext):
 
         hyponyms = []
+        print("Raw Text=" + rawtext)
         np_tagged_sentences, raw_sentences = self.chunk(rawtext)
-        # for i in range(0, len(np_tagged_sentences)):
-        #     print("---------------")
-        #     # print(type(np_tagged_sentences[i]))
-        #     print("np_tag=" + str(np_tagged_sentences[i]))
-        #     # print(type(raw_sentences[i]))
-        #     print("raw=" + str(raw_sentences[i]))
-        #     # for word in raw_sentences[i]:
-        #     #     print(type(word))
-        #     print("---------------")
-            
+        
         for i in range(0, len(np_tagged_sentences)):
             raw_sentence = np_tagged_sentences[i]
             all_tagged_sentence = raw_sentences[i]
@@ -154,17 +155,15 @@ class HearstPatterns(object):
 
             # find any N consecutive NP_ and merge them into one...
             # So, something like: "NP_foo NP_bar blah blah" becomes "NP_foo_bar blah blah"
-            # print("raw_sen=" + raw_sentence)
+            print("Before Union=" + raw_sentence)
             # 这里的作用是把连续的名词合并起来
             sentence = re.sub(r"(NP_\w+ NP_\w+)+", lambda m: m.expand(r'\1').replace(" NP_", "_"), raw_sentence)
-            print("sen=" + sentence)
+            print(type(sentence))
+            print("Unioned Sentence=" + sentence)
             for (hearst_pattern, parser) in self.__hearst_patterns:
                 matches = re.search(hearst_pattern, sentence)
                 if matches:
-                    # print("Match=" + str(matches))
-                    # print("Pattern=" + str(hearst_pattern))
                     match_str = matches.group(0)
-                    # print("Str=" + match_str)
                     nps = [a for a in match_str.split() if a.startswith("NP_")]
 
                     if parser == "first":
